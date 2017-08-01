@@ -11,6 +11,10 @@
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
         <!-- Styles -->
+ <link href="/css/app.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
         <style>
             html, body {
                 background-color: #fff;
@@ -70,26 +74,32 @@
                 <div class="top-right links">
                     @if (Auth::check())
                         <a href="{{ url('/home') }}">Home</a>
+                      <a href="{{ url('/admin') }}">Admin</a>
                     @else
                         <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
-                    @endif
+                      <!--  <a href="{{ url('/register') }}">Register</a>-->
+                    @endif 
+                     
                 </div>
             @endif
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
+           <div class="content">
+
+
+            @if (Auth::check())
+
+              
+            @else
+
+         <!--    @include('auth.logininc') -->
+
+             @endif 
+    
+             <div class="title m-b-md">
+                    Munkaügyek
                 </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
+     </div>
         </div>
     </body>
 </html>
