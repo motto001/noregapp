@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Crud;
 
 use App\Http\Controllers\Controller;
 use App\Role;
@@ -29,7 +29,8 @@ class UsersController extends Controller
         }
 //$view = View::make(compact('users'))->render();
  //header("Access-Control-Allow-Origin:*");
-return response()->json($users);
+return response()    ->json($users,200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE);
+//return response()->json($users);
 //return response()->json(compact('users'));
       //  return view('admin.users.index', compact('users'));
     }

@@ -20,8 +20,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('admin/posts', 'Admin\\PostsController');
-Auth::routes();
+Route::resource('admin/posts', 'Admin\PostsController');
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -33,4 +33,8 @@ Route::resource('admin/permissions', 'Admin\PermissionsController');
 Route::resource('admin/users', 'Admin\UsersController');
 Route::get('admin/generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@getGenerator']);
 Route::post('admin/generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@postGenerator']);
-Route::resource('crud/workers', 'Crud\\WorkersController');
+Route::resource('crud/workers', 'Crud\WorkersController');
+
+Route::get('info', 'InfoController@index');
+Route::get('info/user', 'InfoController@getUserdata');
+Route::get('crud/users', 'Crud\UsersController@index');
