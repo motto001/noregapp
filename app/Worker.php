@@ -25,7 +25,11 @@ class Worker extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'cim', 'email', 'tel', 'birth', 'statusz'];
+    protected $fillable = ['user_id', 'user.email', 'user.password', 'name', 'cim', 'tel', 'birth', 'statusz'];
 
-    
+    public function user()
+	{
+		return $this->belongsTo('App\User');
+	}
+	
 }

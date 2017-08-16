@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Worker;
 
 use App\Http\Controllers\Controller;
 use App\Role;
@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-class UsersController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,11 +27,7 @@ class UsersController extends Controller
         } else {
             $users = User::paginate($perPage);
         }
-//$view = View::make(compact('users'))->render();
- //header("Access-Control-Allow-Origin:*");
-return response()->json($users);
-//return response()->json(compact('users'));
-      //  return view('admin.users.index', compact('users'));
+  return view('admin.users.index', compact('users'));
     }
 
     /**
@@ -60,22 +56,22 @@ return response()->json($users);
     { 
         //$user = Auth::user();
         if(Auth::check() && Auth::user()->hasRole('manager')) {
-        $this->validate($request, ['name' => 'required', 'email' => 'required', 'password' => 'required', 'roles' => 'required']);
+            $this->validate($request, ['name' => 'required', 'email' => 'required', 'password' => 'required', 'roles' => 'required']);
 
-        $data = $request->except('password');
-        $data['password'] = bcrypt($request->password);
-        $user = User::create($data);
+            $data = $request->except('password');
+            $data['password'] = bcrypt($request->password);
+            $user = User::create($data);
 
-        foreach ($request->roles as $role) {
-            $user->assignRole($role);
-        }
+            foreach ($request->roles as $role) {
+                $user->assignRole($role);
+            }
 
-        Session::flash('flash_message', 'User added!');
+            Session::flash('flash_message', 'User added!');
 
-        return redirect('admin/users');
-     }else{
-return response('Jogosultság hiba!');
-     }  
+            return redirect('admin/users');
+        }else{
+            return response('Jogosultság hiba!');
+        }  
     }
 
     /**

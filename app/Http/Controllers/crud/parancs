@@ -1,1 +1,0 @@
-php artisan crud:generate Workers --fields_from_file="/crud/workers.json" --view-path=crud --controller-namespace=Crud --route-group=crud

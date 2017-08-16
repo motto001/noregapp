@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Crud;
+namespace App\Http\Controllers\Worker;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -9,7 +9,7 @@ use App\Worker;
 use Illuminate\Http\Request;
 use Session;
 
-class WorkersController extends Controller
+class WorkerController extends Controller
 {
     /**
      * Display a listing of the resource.

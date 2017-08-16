@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Crud;
+namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Role;
@@ -9,8 +9,13 @@ use Illuminate\Http\Request;
 use Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Lib;
+
+
 class UsersController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +23,9 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
-        $keyword = $request->get('search');
+
+          
+  $keyword = $request->get('search');
         $perPage = 15;
 
         if (!empty($keyword)) {
@@ -27,29 +34,14 @@ class UsersController extends Controller
         } else {
             $users = User::paginate($perPage);
         }
-//$view = View::make(compact('users'))->render();
- //header("Access-Control-Allow-Origin:*");
-return response()    ->json($users,200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE);
-//return response()->json($users);
-//return response()->json(compact('users'));
-      //  return view('admin.users.index', compact('users'));
+      
+      return \App\Lib\MoView::view('admin.users.index',$users,'users',$request->is('cors/*'));
+       // return response()    ->json($users,200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE);
+
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return void
-     */
-    public function create()
-    {
-        $roles = Role::select('id', 'name', 'label')->get();
- //print_R($roles);
-
-        $roles = $roles->pluck('label', 'name');
-     //  print_R(compact('roles'));
-//echo $roles[1]['root'];
-        return view('admin.users.create', compact('roles'));
-    }
+    
    /**
      * Store a newly created resource in storage.
      *

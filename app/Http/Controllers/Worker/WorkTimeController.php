@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Crud;
+namespace App\Http\Controllers\Worker;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Worker;
+use App\WorkTime;
 use Illuminate\Http\Request;
 use Session;
 
-class WorkersController extends Controller
+class WorkTimeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,18 +22,18 @@ class WorkersController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $workers = Worker::where('name', 'LIKE', "%$keyword%")
-				->orWhere('cim', 'LIKE', "%$keyword%")
-				->orWhere('email', 'LIKE', "%$keyword%")
-				->orWhere('tel', 'LIKE', "%$keyword%")
-				->orWhere('birth', 'LIKE', "%$keyword%")
-				->orWhere('statusz', 'LIKE', "%$keyword%")
+            $worktime = WorkTime::where('user_id', 'LIKE', "%$keyword%")
+				->orWhere('year', 'LIKE', "%$keyword%")
+				->orWhere('mounth', 'LIKE', "%$keyword%")
+				->orWhere('day', 'LIKE', "%$keyword%")
+				->orWhere('hour', 'LIKE', "%$keyword%")
+				->orWhere('type', 'LIKE', "%$keyword%")
 				->paginate($perPage);
         } else {
-            $workers = Worker::paginate($perPage);
+            $worktime = WorkTime::paginate($perPage);
         }
 
-        return view('crud.workers.index', compact('workers'));
+        return view('Crud.work-time.index', compact('worktime'));
     }
 
     /**
@@ -43,7 +43,7 @@ class WorkersController extends Controller
      */
     public function create()
     {
-        return view('crud.workers.create');
+        return view('Crud.work-time.create');
     }
 
     /**
@@ -56,20 +56,18 @@ class WorkersController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-			'name' => 'required|max:100',
-			'cim' => 'required|max:200',
-			'email' => 'email',
-			'tel' => 'max:50',
-			'birth' => 'required|date',
-			'statusz' => 'max:50'
+			'year' => 'required|min:2000|max:2100',
+			'mounth' => 'required|max:12',
+			'day' => 'required|max:31',
+			'hour' => 'max:24'
 		]);
         $requestData = $request->all();
         
-        Worker::create($requestData);
+        WorkTime::create($requestData);
 
-        Session::flash('flash_message', 'Worker added!');
+        Session::flash('flash_message', 'WorkTime added!');
 
-        return redirect('crud/workers');
+        return redirect('Crud/work-time');
     }
 
     /**
@@ -81,9 +79,9 @@ class WorkersController extends Controller
      */
     public function show($id)
     {
-        $worker = Worker::findOrFail($id);
+        $worktime = WorkTime::findOrFail($id);
 
-        return view('crud.workers.show', compact('worker'));
+        return view('Crud.work-time.show', compact('worktime'));
     }
 
     /**
@@ -95,9 +93,9 @@ class WorkersController extends Controller
      */
     public function edit($id)
     {
-        $worker = Worker::findOrFail($id);
+        $worktime = WorkTime::findOrFail($id);
 
-        return view('crud.workers.edit', compact('worker'));
+        return view('Crud.work-time.edit', compact('worktime'));
     }
 
     /**
@@ -111,21 +109,19 @@ class WorkersController extends Controller
     public function update($id, Request $request)
     {
         $this->validate($request, [
-			'name' => 'required|max:100',
-			'cim' => 'required|max:200',
-			'email' => 'email',
-			'tel' => 'max:50',
-			'birth' => 'required|date',
-			'statusz' => 'max:50'
+			'year' => 'required|min:2000|max:2100',
+			'mounth' => 'required|max:12',
+			'day' => 'required|max:31',
+			'hour' => 'max:24'
 		]);
         $requestData = $request->all();
         
-        $worker = Worker::findOrFail($id);
-        $worker->update($requestData);
+        $worktime = WorkTime::findOrFail($id);
+        $worktime->update($requestData);
 
-        Session::flash('flash_message', 'Worker updated!');
+        Session::flash('flash_message', 'WorkTime updated!');
 
-        return redirect('crud/workers');
+        return redirect('Crud/work-time');
     }
 
     /**
@@ -137,10 +133,10 @@ class WorkersController extends Controller
      */
     public function destroy($id)
     {
-        Worker::destroy($id);
+        WorkTime::destroy($id);
 
-        Session::flash('flash_message', 'Worker deleted!');
+        Session::flash('flash_message', 'WorkTime deleted!');
 
-        return redirect('crud/workers');
+        return redirect('Crud/work-time');
     }
 }

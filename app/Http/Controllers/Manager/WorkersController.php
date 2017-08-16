@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Manager;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Post;
+use App\Worker;
 use Illuminate\Http\Request;
 use Session;
 
-class PostsController extends Controller
+class WorkersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,15 +22,20 @@ class PostsController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $posts = Post::where('title', 'LIKE', "%$keyword%")
-				->orWhere('content', 'LIKE', "%$keyword%")
-				->orWhere('category', 'LIKE', "%$keyword%")
+            $workers = Worker::where('user_id', 'LIKE', "%$keyword%")
+				->orWhere('user.email', 'LIKE', "%$keyword%")
+				->orWhere('user.password', 'LIKE', "%$keyword%")
+				->orWhere('name', 'LIKE', "%$keyword%")
+				->orWhere('cim', 'LIKE', "%$keyword%")
+				->orWhere('tel', 'LIKE', "%$keyword%")
+				->orWhere('birth', 'LIKE', "%$keyword%")
+				->orWhere('statusz', 'LIKE', "%$keyword%")
 				->paginate($perPage);
         } else {
-            $posts = Post::paginate($perPage);
+            $workers = Worker::paginate($perPage);
         }
 
-        return view('admin.posts.index', compact('posts'));
+        return view('Manager.workers.index', compact('workers'));
     }
 
     /**
@@ -40,7 +45,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create');
+        return view('Manager.workers.create');
     }
 
     /**
@@ -52,14 +57,21 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $this->validate($request, [
+			'name' => 'required|max:100',
+			'cim' => 'required|max:200',
+			'email' => 'email',
+			'tel' => 'max:50',
+			'birth' => 'required|date',
+			'statusz' => 'max:50'
+		]);
         $requestData = $request->all();
         
-        Post::create($requestData);
+        Worker::create($requestData);
 
-        Session::flash('flash_message', 'Post added!');
+        Session::flash('flash_message', 'Worker added!');
 
-        return redirect('admin/posts');
+        return redirect('Manager/workers');
     }
 
     /**
@@ -71,9 +83,9 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        $post = Post::findOrFail($id);
+        $worker = Worker::findOrFail($id);
 
-        return view('admin.posts.show', compact('post'));
+        return view('Manager.workers.show', compact('worker'));
     }
 
     /**
@@ -85,9 +97,9 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::findOrFail($id);
+        $worker = Worker::findOrFail($id);
 
-        return view('admin.posts.edit', compact('post'));
+        return view('Manager.workers.edit', compact('worker'));
     }
 
     /**
@@ -100,15 +112,22 @@ class PostsController extends Controller
      */
     public function update($id, Request $request)
     {
-        
+        $this->validate($request, [
+			'name' => 'required|max:100',
+			'cim' => 'required|max:200',
+			'email' => 'email',
+			'tel' => 'max:50',
+			'birth' => 'required|date',
+			'statusz' => 'max:50'
+		]);
         $requestData = $request->all();
         
-        $post = Post::findOrFail($id);
-        $post->update($requestData);
+        $worker = Worker::findOrFail($id);
+        $worker->update($requestData);
 
-        Session::flash('flash_message', 'Post updated!');
+        Session::flash('flash_message', 'Worker updated!');
 
-        return redirect('admin/posts');
+        return redirect('Manager/workers');
     }
 
     /**
@@ -120,10 +139,10 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        Post::destroy($id);
+        Worker::destroy($id);
 
-        Session::flash('flash_message', 'Post deleted!');
+        Session::flash('flash_message', 'Worker deleted!');
 
-        return redirect('admin/posts');
+        return redirect('Manager/workers');
     }
 }

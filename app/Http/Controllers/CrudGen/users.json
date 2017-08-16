@@ -5,25 +5,27 @@
             "type": "string"
         },
         {
-            "name": "cim",
-            "type": "string"
-        },
-        {
             "name": "email",
             "type": "email"
         },
+         {
+            "name": "password",
+            "type": "password"
+        }
+    ],
+    "foreign_keys": [
         {
-            "name": "tel",
-            "type": "string"
-        },
+            "column": "worker_id",
+            "references": "id",
+            "on": "workers",
+            "onDelete": "cascade"
+        }
+    ],
+    "relationships": [
         {
-            "name": "birth",
-            "type": "date"
-        },
-        {
-            "name": "statusz",
-            "type": "select",
-            "options": ["Állandó", "alkalmi", "diák"]
+            "name": "worker",
+            "type": "belongsTo",
+            "class": "App\\worker"
         }
     ],
 
@@ -32,18 +34,12 @@
             "field": "name",
             "rules": "required|max:100 "
         },  
-        {
-            "field": "cim",
-            "rules": "required|max:200"
-        },
+     
         {
             "field": "email",
             "rules": "email"
         },
-        {
-            "field": "tel",
-            "rules": "max:50"
-        },
+     
         {
             "field": "birth",
             "rules": "required|date"

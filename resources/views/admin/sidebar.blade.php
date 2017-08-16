@@ -10,19 +10,63 @@
                     <ul class="nav" role="tablist">
  @if (Auth::user()->hasRole('user'))                 
                             <li role="admin">
-                                <a href="{{ url('/crud/workers') }}">
-                                    Dolgozók
+                                <a href="{{ url('/user/password') }}">
+                                    Jelszó változtatás
                                 </a>
                             </li>
+                        <li role="admin">
+                                <a href="{{ url('/user/email') }}">
+                                    Email változtatás
+                                </a>
+                            </li>
+
+                            <li role="admin">
+                                <a href="{{ url('/user/personal') }}">
+                                   Személyes adataok
+                                </a>
+                            </li>
+                             <li role="admin">
+                                <a href="{{ url('/user/worktime') }}">
+                                   Munkaidők 
+                                </a>
+                            </li>
+
+
+
  @endif
  @if (Auth::user()->hasRole('manager'))  
-                            <li role="root">
-                                <a href="{{ url('/admin/users') }}">
+                            <li role="manager">
+                                <a href="{{ url('/manager/workers') }}">
+                                    Dolgozok
+                                </a>
+                            </li>
+                              <li role="manager">
+                                <a href="{{ url('/manager/users') }}">
                                     Felhasználók
                                 </a>
                             </li>
+
+@elseif (Auth::user()->hasRole('workadmin'))
+                        <li role="manager">
+                                <a href="{{ url('/workadmin/workers') }}">
+                                    Dolgozok
+                                </a>
+                            </li>
+
  @endif
- @if (Auth::user()->hasRole('root'))                     
+ @if (Auth::user()->hasRole('workadmin'))  
+                            <li role="manager">
+                                <a href="{{ url('/workadmin/worktimes') }}">
+                                    Munkaidő
+                                </a>
+                            </li>
+                         
+ @endif
+
+
+
+
+ @if (Auth::user()->hasRole('admin'))                     
                             <li role="root">
                                 <a href="{{ url('/admin/roles') }}">
                                     Jogok
@@ -45,7 +89,7 @@
                     </ul>
                 </div>
             </div>
-       @if (Auth::user()->hasRole('root'))  
+       @if (Auth::user()->hasRole('admin'))  
             <div class="panel panel-default panel-flush">
                 <div class="panel-heading">
                     Tools
